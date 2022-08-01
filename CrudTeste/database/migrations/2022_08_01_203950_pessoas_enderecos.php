@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('conta', function (Blueprint $table) {
+        Schema::create('pessoa_enderecos', function(Blueprint $table) {
             $table->id();
-            $table->string('conta', 9);
-            $table->decimal('saldo',10,2)->default(0);
-            $table->unsignedBigInteger('pessoa_id');
-            $table->foreign('pessoa_id')->references('id')->on('pessoa');
+
+            $table->foreignId('pessoa_id')->constrained('pessoas');
+            $table->foreignId('conta_id')->constrained('contas');
             $table->timestamps();
+
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('conta');
+        Schema::dropIfExists('pessoas_enderecos');
     }
 };
