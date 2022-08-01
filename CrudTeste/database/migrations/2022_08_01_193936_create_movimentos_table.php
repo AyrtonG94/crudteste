@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('movimentacao', function (Blueprint $table) {
+        Schema::create('movimentos', function (Blueprint $table) {
             $table->id();
             $table->double('valor')->default(0);
             $table->boolean('status')->default(0);

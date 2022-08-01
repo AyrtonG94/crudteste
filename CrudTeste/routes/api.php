@@ -1,7 +1,7 @@
 <?php
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PessoasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('pessoas')->group(function() {
+    Route::get('index', [PessoasController::class, 'index']);
+    Route::post('cadastrar', [PessoasController::class, 'cadastrar']);
 });
