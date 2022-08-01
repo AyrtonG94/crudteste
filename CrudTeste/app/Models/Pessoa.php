@@ -21,6 +21,6 @@ class Pessoa extends Model
     }
 
     public function enderecos() {
-        return $this->belongsToMany(Endereco::class, 'pessoas_enderecos','endereco_id');
+        return $this->belongsToMany(Endereco::class);
     }
 }

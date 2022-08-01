@@ -12,6 +12,6 @@ class Endereco extends Model
     protected $fillable = ['cep', 'numero', 'logradouro', 'bairro', 'uf', 'municipio'];
 
     public function pessoas() {
-        return $this->belongsToMany(Pessoa::class, 'pessoas_enderecos', 'pessoa_id');
+        return $this->belongsToMany(Pessoa::class);
     }
 }
