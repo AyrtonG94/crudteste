@@ -19,8 +19,8 @@ return new class extends Migration
             $table->boolean('status')->default(0);
             $table->unsignedBigInteger('conta_id');
             $table->unsignedBigInteger('pessoa_id');
-            $table->foreign('conta_id')->references('id')->on('conta');
-            $table->foreign('pessoa_id')->references('id')->on('pessoa');
+            $table->foreign('conta_id')->references('id')->on('contas');
+            $table->foreign('pessoa_id')->references('id')->on('pessoas');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movimentacao');
+        Schema::dropIfExists('movimentos');
     }
 };

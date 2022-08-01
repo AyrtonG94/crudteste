@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('conta', 9);
             $table->decimal('saldo',10,2)->default(0);
             $table->unsignedBigInteger('pessoa_id');
-            $table->foreign('pessoa_id')->references('id')->on('pessoa');
+            $table->foreign('pessoa_id')->references('id')->on('pessoas');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('conta');
+        Schema::dropIfExists('contas');
     }
 };
