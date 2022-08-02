@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('contas', function (Blueprint $table) {
             $table->id();
-            $table->string('conta', 9);
+            $table->string('conta', 9)->unique();
             $table->decimal('saldo',10,2)->default(0);
             $table->unsignedBigInteger('pessoa_id');
             $table->foreign('pessoa_id')->references('id')->on('pessoas');
