@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PessoasController;
 use App\Http\Controllers\ContasController;
+use App\Http\Controllers\EnderecosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,11 @@ Route::prefix('contas')->group(function () {
     Route::post('cadastrar', [ContasController::class, 'cadastrar']);
     Route::put('editar/{id}', [ContasController::class, 'editar']);
     Route::delete('deletar-registro/{id}', [ContasController::class, 'deletarRegistro']);
+});
+
+Route::prefix('enderecos')->group(function () {
+    Route::get('index', [EnderecosController::class, 'index']);
+    Route::post('cadastrar', [EnderecosController::class, 'cadastrar']);
+    Route::put('editar/{id}', [EnderecosController::class, 'editar']);
+    Route::delete('deletar-registro/{id}', [EnderecosController::class, 'deletarRegistro']);
 });

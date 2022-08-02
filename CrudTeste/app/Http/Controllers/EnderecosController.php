@@ -3,20 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pessoa;
+use App\Models\Endereco;
 use Exception;
 
-
-class PessoasController extends Controller
+class EnderecosController extends Controller
 {
     public function index()
     {
-        $pessoas = Pessoa::all();
+        $enderecos = Endereco::all();
 
-        if (count($pessoas) == 0) {
-            return "Não existe pessoas cadastradas no momento";
+        if (count($enderecos) == 0) {
+            return "Não existe endereços cadastradas no momento";
         } else {
-            return $pessoas;
+            return $enderecos;
         }
     }
 
@@ -24,8 +23,8 @@ class PessoasController extends Controller
     {
         try {
 
-            $pessoa =  Pessoa::create($request->all());
-            if ($pessoa) {
+            $endereco =  Endereco::create($request->all());
+            if ($endereco) {
                 return response()->json([
                     'message' => 'Registro inserido com sucesso'
                 ], 200);
@@ -40,11 +39,11 @@ class PessoasController extends Controller
 
     public function editar(Request $request, $id)
     {
-        $pessoa = Pessoa::find($id);
+        $endereco = Endereco::find($id);
 
-        if ($pessoa) {
+        if ($endereco) {
 
-            $pessoa->update($request->all());
+            $endereco->update($request->all());
             return response()->json([
                 'message' => 'Registro alterado com sucesso'
             ], 200);
@@ -58,10 +57,10 @@ class PessoasController extends Controller
     public function deletarRegistro($id)
     {
 
-        $pessoa = Pessoa::find($id);
+        $endereco = Endereco::find($id);
 
-        if ($pessoa) {
-            $pessoa->delete();
+        if ($endereco) {
+            $endereco->delete();
             return response()->json([
                 'message' => 'Registro deletado com sucesso'
             ], 200);
