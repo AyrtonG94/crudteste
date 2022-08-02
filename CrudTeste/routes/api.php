@@ -43,7 +43,7 @@ Route::prefix('enderecos')->group(function () {
     Route::delete('deletar-registro/{id}', [EnderecosController::class, 'deletarRegistro']);
 });
 
-Route::prefix('movimentacao')->group(function () {
-    Route::get('index', [EnderecosController::class, 'index']);
-    Route::post('cadastrar', [EnderecosController::class, 'cadastrar']);
+Route::prefix('movimentos')->group(function () {
+    Route::get('index', [MovimentosController::class, 'index']);
+    Route::post('cadastrar', [MovimentosController::class, 'cadastrar']);
 });

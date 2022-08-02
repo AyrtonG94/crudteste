@@ -15,7 +15,7 @@ class MovimentosController extends Controller
         if (count($movimentos) == 0) {
             return "Não existe movimentos registrados no momento";
         } else {
-            return $movimentos;
+            return Movimento::with('conta', 'pessoa')->get();
         }
     }
 
