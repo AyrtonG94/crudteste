@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PessoasController;
 use App\Http\Controllers\ContasController;
 use App\Http\Controllers\EnderecosController;
+use App\Http\Controllers\MovimentosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,9 @@ Route::prefix('enderecos')->group(function () {
     Route::post('cadastrar', [EnderecosController::class, 'cadastrar']);
     Route::put('editar/{id}', [EnderecosController::class, 'editar']);
     Route::delete('deletar-registro/{id}', [EnderecosController::class, 'deletarRegistro']);
+});
+
+Route::prefix('movimentacao')->group(function () {
+    Route::get('index', [EnderecosController::class, 'index']);
+    Route::post('cadastrar', [EnderecosController::class, 'cadastrar']);
 });

@@ -24,12 +24,11 @@ class PessoasController extends Controller
     {
         try {
 
-            $pessoa =  Pessoa::create($request->all());
-            if ($pessoa) {
-                return response()->json([
-                    'message' => 'Registro inserido com sucesso'
-                ], 200);
-            }
+            Pessoa::create($request->all());
+
+            return response()->json([
+                'message' => 'Registro inserido com sucesso'
+            ], 200);
         } catch (Exception) {
 
             return response()->json([

@@ -23,12 +23,11 @@ class EnderecosController extends Controller
     {
         try {
 
-            $endereco =  Endereco::create($request->all());
-            if ($endereco) {
-                return response()->json([
-                    'message' => 'Registro inserido com sucesso'
-                ], 200);
-            }
+            Endereco::create($request->all());
+
+            return response()->json([
+                'message' => 'Registro inserido com sucesso'
+            ], 200);
         } catch (Exception) {
 
             return response()->json([
