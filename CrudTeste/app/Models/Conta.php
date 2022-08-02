@@ -9,7 +9,7 @@ class Conta extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['conta', 'saldo', 'pessoa_id'];
+    protected $fillable = ['conta', 'pessoa_id'];
 
     public function pessoa() {
         return $this->belongsTo(Pessoa::class);
