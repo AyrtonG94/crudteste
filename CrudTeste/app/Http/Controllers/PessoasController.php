@@ -22,37 +22,53 @@ class PessoasController extends Controller
 
     public function cadastrar(Request $request)
     {
-
         try {
+
             $pessoa =  Pessoa::create($request->all());
-            return $pessoa;
+            if ($pessoa) {
+                return response()->json([
+                    'message' => 'Registro inserido com sucesso'
+                ], 200);
+            }
         } catch (Exception) {
-            return "Não  foi possível criar o cadastro, preencha todos os campos corretamente";
+
+            return response()->json([
+                'error' => 'Preencha os campos corretamente'
+            ], 500);
         }
     }
 
     public function editar(Request $request, $id)
     {
-
         $pessoa = Pessoa::find($id);
+
         if ($pessoa) {
 
             $pessoa->update($request->all());
-            return $pessoa . "Dados alterados com sucesso";
+            return response()->json([
+                'message' => 'Registro alterado com sucesso'
+            ], 200);
         } else {
-            return "Essa pessoa não existe em nossa base de dados";
+            return response()->json([
+                'error' => 'Preencha os campos corretamente'
+            ], 500);
         }
     }
 
-    public function deletarRegistro($id)
+    public function deletarRegistro(Request $request, $id)
     {
+
         $pessoa = Pessoa::find($id);
 
         if ($pessoa) {
             $pessoa->delete();
-            return $pessoa . "Registro deletado com sucesso";
+            return response()->json([
+                'message' => 'Registro deletado com sucesso'
+            ], 200);
         } else {
-            return "Essa pessoa não existe em nossa base de dados";
+            return response()->json([
+                'error' => 'Esse registro não existe'
+            ], 500);
         }
     }
 }
