@@ -21,6 +21,6 @@ class Pessoa extends Model
     }
 
     public function enderecos() {
-        return $this->belongsToMany(Endereco::class);
+        return $this->hasOne(Endereco::class);
     }
 }

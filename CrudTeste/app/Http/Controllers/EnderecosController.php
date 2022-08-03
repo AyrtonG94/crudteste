@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Endereco;
-use Exception;
+use Illuminate\Support\Facades\Validator;
 
 class EnderecosController extends Controller
 {
@@ -21,37 +21,48 @@ class EnderecosController extends Controller
 
     public function cadastrar(Request $request)
     {
-        try {
+        $validar = Validator::make($request->all(),[
+            'cep' => 'required|min:8|max:8',
+            'logradouro' => 'required',
+            'bairro' => 'required',
+            'uf' => 'required|min:2|max:2',
+            'municipio' => 'required',
+        ]);
 
+        if(count($validar->errors()) !=0) {
+            return $validar->errors();
+        } else {
             Endereco::create($request->all());
-
             return response()->json([
-                'message' => 'Registro inserido com sucesso'
+                'Mensagem' => 'Registro cadastrado com sucesso'
             ], 200);
-        } catch (Exception) {
-
-            return response()->json([
-                'error' => 'Preencha os campos corretamente'
-            ], 500);
         }
     }
 
     public function editar(Request $request, $id)
     {
         $endereco = Endereco::find($id);
+        $validar = Validator::make($request->all(), [
+            'cep' => 'min:8|max:8',
+            'uf' => 'min:2|max:2',
+        ]);
 
-        if ($endereco) {
-
+        if(count($validar->errors()) != 0) {
+            return $validar->errors();
+        } 
+        elseif(!$endereco) {
+            return response()->json([
+                'Mensagem' => 'Esse registro não existe'
+            ], 500);
+        } 
+        else {
             $endereco->update($request->all());
             return response()->json([
-                'message' => 'Registro alterado com sucesso'
+                'Mensagem' => 'Registro alterado com sucesso'
             ], 200);
-        } else {
-            return response()->json([
-                'error' => 'Preencha os campos corretamente'
-            ], 500);
         }
     }
+
 
     public function deletarRegistro($id)
     {

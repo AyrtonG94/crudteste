@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Conta;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ContasController extends Controller
 {
@@ -24,36 +25,43 @@ class ContasController extends Controller
 
     public function cadastrar(Request $request)
     {
-        try {
+        $validar = Validator::make($request->all(), [
+            'conta' => 'required|min:8|max:8',
+            'pessoa_id' => 'required',
+        ]);
 
+        if (count($validar->errors()) != 0) {
+            return $validar->errors();
+        } else {
             Conta::create($request->all());
-
             return response()->json([
-                'message' => 'Registro inserido com sucesso'
-            ], 200);
-        } catch (Exception) {
-
-            return response()->json([
-                'error' => 'Preencha os campos corretamente'
-            ], 500);
+                'Mensagem' => 'Registro criado com sucesso'
+            ]);
         }
     }
 
 
     public function editar(Request $request, $id)
     {
+        $validar = Validator::make($request->all(), [
+            'conta' => 'min:8|max:8',
+        ]);
+
         $conta = Conta::find($id);
 
-        if ($conta) {
-
+        if (count($validar->errors()) != 0) {
+            return $validar->errors();
+        } 
+        elseif (!$conta) {
+            return response()->json([
+                'error' => 'Esse registro não existe'
+            ], 500);
+        } 
+        else {
             $conta->update($request->all());
             return response()->json([
-                'message' => 'Registro alterado com sucesso'
+                'Mensagem' => 'Registro alterado com sucesso'
             ], 200);
-        } else {
-            return response()->json([
-                'error' => 'Preencha os campos corretamente'
-            ], 500);
         }
     }
 

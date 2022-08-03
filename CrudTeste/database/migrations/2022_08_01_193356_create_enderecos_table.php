@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('bairro', 45);
             $table->string('uf', 2);
             $table->string('municipio', 45);
+            $table->unsignedBigInteger('pessoa_id');
+            $table->foreign('pessoa_id')->references('id')->on('pessoas')->onDelete('cascade');
             $table->timestamps();
         });
     }

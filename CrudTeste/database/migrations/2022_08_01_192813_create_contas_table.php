@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('conta')->unique();
             $table->decimal('saldo',10,2)->default(0);
             $table->unsignedBigInteger('pessoa_id');
-            $table->foreign('pessoa_id')->references('id')->on('pessoas');
+            $table->foreign('pessoa_id')->references('id')->on('pessoas')->onDelete('cascade');
             $table->timestamps();
         });
     }

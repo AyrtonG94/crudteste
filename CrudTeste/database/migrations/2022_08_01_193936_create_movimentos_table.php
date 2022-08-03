@@ -19,8 +19,8 @@ return new class extends Migration
             $table->boolean('status')->default(0);
             $table->unsignedBigInteger('conta_id');
             $table->unsignedBigInteger('pessoa_id');
-            $table->foreign('conta_id')->references('id')->on('contas');
-            $table->foreign('pessoa_id')->references('id')->on('pessoas');
+            $table->foreign('conta_id')->references('id')->on('contas')->onDelete('cascade');
+            $table->foreign('pessoa_id')->references('id')->on('pessoas')->onDelete('cascade');
             $table->timestamps();
         });
     }
