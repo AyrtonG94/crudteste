@@ -21,8 +21,8 @@ class MovimentosController extends Controller
 
     public function cadastrar(Request $request)
     {
-
         try {
+
             Movimento::create($request->all());
             return response()->json([
                 'mensagem' => 'Registro criado com sucesso'

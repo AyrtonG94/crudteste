@@ -21,16 +21,16 @@ class ContasController extends Controller
         }
     }
 
+
     public function cadastrar(Request $request)
     {
         try {
 
-            $conta =  Conta::create($request->all());
-            if ($conta) {
-                return response()->json([
-                    'message' => 'Registro inserido com sucesso'
-                ], 200);
-            }
+            Conta::create($request->all());
+
+            return response()->json([
+                'message' => 'Registro inserido com sucesso'
+            ], 200);
         } catch (Exception) {
 
             return response()->json([
@@ -38,6 +38,7 @@ class ContasController extends Controller
             ], 500);
         }
     }
+
 
     public function editar(Request $request, $id)
     {
@@ -55,6 +56,7 @@ class ContasController extends Controller
             ], 500);
         }
     }
+
 
     public function deletarRegistro($id)
     {
