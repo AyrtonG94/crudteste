@@ -22,7 +22,8 @@ class EnderecosController extends Controller
     public function cadastrar(Request $request)
     {
         $validar = Validator::make($request->all(),[
-            'cep' => 'required|min:8|max:8',
+            'cep' => 'required|min:8|numeric',
+            'numero' => 'max:4',
             'logradouro' => 'required',
             'bairro' => 'required',
             'uf' => 'required|min:2|max:2',
@@ -43,7 +44,7 @@ class EnderecosController extends Controller
     {
         $endereco = Endereco::find($id);
         $validar = Validator::make($request->all(), [
-            'cep' => 'min:8|max:8',
+            'cep' => 'min:8|max:8|numeric',
             'uf' => 'min:2|max:2',
         ]);
 

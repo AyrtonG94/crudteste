@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movimento;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class MovimentosController extends Controller
 {
@@ -21,16 +22,16 @@ class MovimentosController extends Controller
 
     public function cadastrar(Request $request)
     {
-        try {
-
+        $validar = Validator::make($request->all(), [
+            'valor' => 'numeric',
+        ]);
+        if (count($validar->errors()) != 0) {
+            return $validar->errors();
+        } else {
             Movimento::create($request->all());
             return response()->json([
                 'mensagem' => 'Registro criado com sucesso'
-            ]);
-        } catch (Exception) {
-            return response()->json([
-                'mensagem' => 'Não foi possivel registrar a movimentação, preencha os dados novamente'
-            ]);
+            ], 200);
         }
     }
 }

@@ -26,7 +26,7 @@ class ContasController extends Controller
     public function cadastrar(Request $request)
     {
         $validar = Validator::make($request->all(), [
-            'conta' => 'required|min:8|max:8',
+            'conta' => 'required|min:8|max:8|numeric',
             'pessoa_id' => 'required',
         ]);
 
@@ -44,7 +44,7 @@ class ContasController extends Controller
     public function editar(Request $request, $id)
     {
         $validar = Validator::make($request->all(), [
-            'conta' => 'min:8|max:8',
+            'conta' => 'min:8|max:8|numeric',
         ]);
 
         $conta = Conta::find($id);

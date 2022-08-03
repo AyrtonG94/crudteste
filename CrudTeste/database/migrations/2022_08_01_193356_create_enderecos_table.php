@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('numero', 4)->nullable();
             $table->string('logradouro', 100);
             $table->string('bairro', 45);
+            $table->string('complemento', 50);
             $table->string('uf', 2);
             $table->string('municipio', 45);
             $table->unsignedBigInteger('pessoa_id');

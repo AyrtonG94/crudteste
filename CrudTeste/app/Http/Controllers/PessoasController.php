@@ -22,8 +22,8 @@ class PessoasController extends Controller
     public function cadastrar(Request $request)
     {
         $validar = Validator::make($request->all(), [
-            'nome' => 'required|min:3',
-            'cpf' => 'required|min:11|max:11|unique:pessoas'
+            'nome' => 'required|min:3|max:50|alpha',
+            'cpf' => 'required|min:11|max:11|unique:pessoas|numeric'
         ]);
 
         if (count($validar->errors()) != 0) {
@@ -40,8 +40,8 @@ class PessoasController extends Controller
     {
 
         $validar = Validator::make($request->all(), [
-            'nome' => 'min:3',
-            'cpf' => 'min:11|max:11',
+            'nome' => 'min:3|max:50|alpha',
+            'cpf' => 'min:11|max:11|numeric',
         ]);
 
         $pessoa = Pessoa::find($id);
