@@ -22,14 +22,18 @@ class PessoasController extends Controller
     public function cadastrar(Request $request)
     {
         $validar = Validator::make($request->all(), [
-            'nome' => 'required|min:3|max:50|alpha',
-            'cpf' => 'required|min:11|max:11|unique:pessoas|numeric'
+            'nome' => 'required|min:3|max:50',
+            'cpf' => 'required|min:11|unique:pessoas|numeric'
         ]);
 
         if (count($validar->errors()) != 0) {
             return $validar->errors();
         } else {
-            Pessoa::create($request->all());
+            $pessoa = new Pessoa;
+            $pessoa->nome = $request->nome;
+            $pessoa->cpf = $request->cpf;
+            $pessoa->nome = mb_convert_case($pessoa->nome, MB_CASE_TITLE, "UTF-8");
+            $pessoa->save();
             return response()->json([
                 'Mensagem' => 'Registro criado com sucesso'
             ]);
@@ -48,13 +52,11 @@ class PessoasController extends Controller
 
         if (count($validar->errors()) != 0) {
             return $validar->errors();
-        } 
-        elseif (!$pessoa) {
+        } elseif (!$pessoa) {
             return response()->json([
                 'error' => 'Esse registro não existe'
             ], 500);
-        } 
-        else {
+        } else {
             $pessoa->update($request->all());
             return response()->json([
                 'Mensagem' => 'Registro alterado com sucesso'
