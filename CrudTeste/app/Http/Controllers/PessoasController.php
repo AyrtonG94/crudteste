@@ -22,16 +22,22 @@ class PessoasController extends Controller
     public function cadastrar(Request $request)
     {
         $validar = Validator::make($request->all(), [
-            'nome' => 'required|min:3|max:50',
+            'nome' => 'required|min:3|max:50|',
             'cpf' => 'required|min:11|unique:pessoas|numeric'
         ]);
 
+        $pessoa = new Pessoa;
+        $pessoa->nome = $request->nome;
+        $pessoa->cpf = $request->cpf;
+        $validar_nome = preg_match('|^[\pL\s]+$|u', $pessoa->nome);
+
         if (count($validar->errors()) != 0) {
             return $validar->errors();
-        } else {
-            $pessoa = new Pessoa;
-            $pessoa->nome = $request->nome;
-            $pessoa->cpf = $request->cpf;
+        } 
+        elseif (!$validar_nome) {
+            return "O nome só pode conter letras";
+        } 
+        else {
             $pessoa->nome = mb_convert_case($pessoa->nome, MB_CASE_TITLE, "UTF-8");
             $pessoa->save();
             return response()->json([
@@ -42,10 +48,10 @@ class PessoasController extends Controller
 
     public function editar(Request $request, $id)
     {
-
+        
         $validar = Validator::make($request->all(), [
-            'nome' => 'min:3|max:50|alpha',
-            'cpf' => 'min:11|max:11|numeric',
+            'nome' => 'min:3|max:50|',
+            'cpf' => 'min:11|numeric|unique:pessoas,cpf,'.$id
         ]);
 
         $pessoa = Pessoa::find($id);
