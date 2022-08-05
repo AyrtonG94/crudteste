@@ -10,11 +10,11 @@ class PessoasController extends Controller
 {
     public function index()
     {   
-        $pessoa = Pessoa::with('enderecos')->get();
+        $pessoa = Pessoa::with('endereco')->get();
         if (count($pessoa) == 0) {
             return "Não existe pessoas cadastradas no momento";
         } else {
-             return $pessoa->where('endereco_id', '=', 1)->first();
+             return $pessoa;
         }
     }
 
@@ -29,7 +29,6 @@ class PessoasController extends Controller
         $pessoa = new Pessoa;
         $pessoa->nome = $request->nome;
         $pessoa->cpf = $request->cpf;
-        $pessoa->endereco_id = $request->endereco_id;
         $validar_nome = preg_match('|^[\pL\s]+$|u', $pessoa->nome);
 
         if (count($validar->errors()) != 0) {

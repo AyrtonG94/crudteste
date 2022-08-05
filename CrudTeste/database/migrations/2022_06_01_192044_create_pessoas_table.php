@@ -17,8 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('nome', 50);
             $table->string('cpf', 11)->unique();
-            $table->unsignedBigInteger('endereco_id');
-            $table->foreign('endereco_id')->references('id')->on('enderecos')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('complemento', 50);
             $table->string('uf', 2);
             $table->string('municipio', 45);
+            $table->unsignedBigInteger('pessoa_id');
+            $table->foreign('pessoa_id')->references('id')->on('pessoas')->onDelete('cascade');
             $table->timestamps();
         });
     }
