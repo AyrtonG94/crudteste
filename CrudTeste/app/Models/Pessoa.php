@@ -10,7 +10,7 @@ class Pessoa extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome', 'cpf'];
+    protected $fillable = ['nome', 'cpf', 'endereco_id'];
 
     public function conta() {
         return $this->hasOne(Conta::class);
@@ -20,7 +20,7 @@ class Pessoa extends Model
         return $this->hasOne(Movimento::class);
     }
 
-    public function enderecos() {
-        return $this->hasOne(Endereco::class);
+    public function endereco() {
+        return $this->belongsTo(Endereco::class);
     }
 }

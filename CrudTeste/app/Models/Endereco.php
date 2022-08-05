@@ -9,9 +9,9 @@ class Endereco extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cep', 'numero', 'logradouro', 'bairro','complemento', 'uf', 'municipio', 'pessoa_id'];
+    protected $fillable = ['cep', 'numero', 'logradouro', 'bairro','complemento', 'uf', 'municipio'];
 
-    public function pessoas() {
-        return $this->belongsTo(Pessoa::class);
+    public function pessoa() {
+        return $this->hasMany(Pessoa::class);
     }
 }

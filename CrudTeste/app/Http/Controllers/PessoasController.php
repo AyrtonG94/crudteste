@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\Validator;
 class PessoasController extends Controller
 {
     public function index()
-    {
-        $pessoas = Pessoa::all();
-
-        if (count($pessoas) == 0) {
+    {   
+        $pessoa = Pessoa::with('enderecos')->get();
+        if (count($pessoa) == 0) {
             return "Não existe pessoas cadastradas no momento";
         } else {
-            return $pessoas;
+             return $pessoa->where('endereco_id', '=', 1)->first();
         }
     }
+
 
     public function cadastrar(Request $request)
     {
@@ -29,6 +29,7 @@ class PessoasController extends Controller
         $pessoa = new Pessoa;
         $pessoa->nome = $request->nome;
         $pessoa->cpf = $request->cpf;
+        $pessoa->endereco_id = $request->endereco_id;
         $validar_nome = preg_match('|^[\pL\s]+$|u', $pessoa->nome);
 
         if (count($validar->errors()) != 0) {
@@ -39,6 +40,7 @@ class PessoasController extends Controller
         } 
         else {
             $pessoa->nome = mb_convert_case($pessoa->nome, MB_CASE_TITLE, "UTF-8");
+            
             $pessoa->save();
             return response()->json([
                 'Mensagem' => 'Registro criado com sucesso'
@@ -46,12 +48,13 @@ class PessoasController extends Controller
         }
     }
 
+
     public function editar(Request $request, $id)
     {
-        
+
         $validar = Validator::make($request->all(), [
             'nome' => 'min:3|max:50|',
-            'cpf' => 'min:11|numeric|unique:pessoas,cpf,'.$id
+            'cpf' => 'min:11|numeric|unique:pessoas,cpf,' . $id
         ]);
 
         $pessoa = Pessoa::find($id);
@@ -69,6 +72,7 @@ class PessoasController extends Controller
             ]);
         }
     }
+
 
 
     public function deletarRegistro($id)
