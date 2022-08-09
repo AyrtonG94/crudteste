@@ -46,7 +46,7 @@
         <!-- Conteudo-->
 
         <div class="mt-5">
-            <button type="submit" class="btn btn-primary" v-on:click="testeModal()">Cadastrar</button>
+            <button type="submit" class="btn btn-primary" v-on:click="cadastrarPessoa()">Cadastrar</button>
         </div>
 
 
@@ -61,13 +61,19 @@
             </thead>
             <tbody>
                 <tr class="table-active" v-for="pessoa in pessoas">
+                    <td>{{pessoa.id}}</td>
                     <td>{{pessoa.nome}}</td>
                     <td>{{pessoa.cpf}}</td>
                     <td v-for="endereco in pessoa.endereco">{{endereco.logradouro}}</td>
-                    <td> <i class="bi bi-pen-fill"> </i> <i class="bi bi-trash"></i> </td>
+                    <td>  <i class="bi bi-pen-fill"> </i> <i class="bi bi-trash" v-on:click="deletarPessoa(pessoa.id)"></i>  </td>
 
                 </tr>
         </table>
+
+        <div v-for="erro in erros">
+            {{erro[0]}}
+        </div>
+
 
 
 
@@ -80,7 +86,7 @@
             el: '#app',
             data: {
                 pessoas: [],
-                deletarPessoa: 'http://127.0.0.1:8000/api/pessoas/deletar-registro/{id}'
+                erros: [],
             },
 
             methods: {
@@ -90,7 +96,7 @@
                     })
                 },
 
-                testeModal() {
+                cadastrarPessoa() {
                     Swal.fire({
                         title: 'Formulário de cadastro/edição de pessoas',
                         html: '<input type="text" id="nome" class="swal2-input" placeholder="Digite o seu nome">' +
@@ -102,7 +108,7 @@
                             ' <input type="text" id="complemento" class="swal2-input" placeholder="complemento">' +
                             ' <input type="text" id="uf" class="swal2-input" placeholder="Sigla do estado,exemplo: SP">' +
                             ' <input type="text" id="municipio" class="swal2-input" placeholder="cidade">' +
-                            ' <input type="hidden" id="pessoa_id" class="swal2-input" >',
+                            ' <input type="hidden" id="pessoa_id" class="swal2-input">',
 
                         confirmButtonText: 'Cadastrar',
                         showCancelButton: true,
@@ -122,19 +128,28 @@
                         const complemento = Swal.getPopup().querySelector('#complemento').value
                         const uf = Swal.getPopup().querySelector('#uf').value
                         const municipio = Swal.getPopup().querySelector('#municipio').value
-                        const pessoa_id = Swal.getPopup().querySelector('#pessoa_id').value
-                        const pessoa = { nome, cpf }
-                        const endereco = { cep, numero, logradouro, bairro, complemento, uf, municipio, pessoa_id }
+                        const pessoa_id = Swal.getPopup().querySelector('#municipio').value
+                        const pessoa = { nome, cpf, cep, numero, logradouro, bairro, complemento, uf, municipio, pessoa_id }
 
-                        axios.all([
-                            axios.post('http://127.0.0.1:8000/api/pessoas/cadastrar', pessoa),
-                            axios.post('http://127.0.0.1:8000/api/enderecos/cadastrar', endereco)
-                        ])
-                            .then(axios.spread((pessoa, endereco) => {
-                                console.log('pessoa', pessoa, 'endereco', endereco)
-                                this.created();
-                            }));
+
+                        axios.post('http://127.0.0.1:8000/api/pessoas/cadastrar', pessoa).then(resp => {
+                            this.erros = resp.data;
+
+                            if (!this.erros) {
+                                location.reload();
+                                Swal.fire(
+                                    'Parabéns',
+                                    'Cadastro realizado com sucesso !',
+                                    'success'
+                                );
+                            }
+                        })
+
                     })
+                },
+
+                deletarPessoa(id) {  
+                    axios.delete(`127.0.0.1:8000/api/pessoas/deletar-registro/${id}` );
                 }
 
             },

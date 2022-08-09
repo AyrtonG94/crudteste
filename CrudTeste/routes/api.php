@@ -38,7 +38,6 @@ Route::prefix('contas')->group(function () {
 
 Route::prefix('enderecos')->group(function () {
     Route::get('index', [EnderecosController::class, 'index']);
-    Route::post('cadastrar', [EnderecosController::class, 'cadastrar']);
     Route::put('editar/{id}', [EnderecosController::class, 'editar']);
     Route::delete('deletar-registro/{id}', [EnderecosController::class, 'deletarRegistro']);
 });

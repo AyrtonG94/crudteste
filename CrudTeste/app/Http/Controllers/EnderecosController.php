@@ -19,27 +19,6 @@ class EnderecosController extends Controller
         }
     }
 
-    public function cadastrar(Request $request)
-    {
-        $validar = Validator::make($request->all(),[
-            'cep' => 'required|min:8|numeric',
-            'numero' => 'max:4',
-            'logradouro' => 'required',
-            'bairro' => 'required',
-            'uf' => 'required|min:2|max:2',
-            'municipio' => 'required',
-        ]);
-
-        if(count($validar->errors()) !=0) {
-            return $validar->errors();
-        } else {
-            Endereco::create($request->all());
-            return response()->json([
-                'Mensagem' => 'Registro cadastrado com sucesso'
-            ], 200);
-            
-        }
-    }
 
     public function editar(Request $request, $id)
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Endereco;
 use Illuminate\Http\Request;
 use App\Models\Pessoa;
 use Illuminate\Support\Facades\Validator;
@@ -9,12 +10,12 @@ use Illuminate\Support\Facades\Validator;
 class PessoasController extends Controller
 {
     public function index()
-    {   
+    {
         $pessoa = Pessoa::with('endereco')->get();
         if (count($pessoa) == 0) {
             return "Não existe pessoas cadastradas no momento";
         } else {
-             return $pessoa;
+            return $pessoa;
         }
     }
 
@@ -23,26 +24,41 @@ class PessoasController extends Controller
     {
         $validar = Validator::make($request->all(), [
             'nome' => 'required|min:3|max:50|',
-            'cpf' => 'required|min:11|unique:pessoas|numeric'
+            'cpf' => 'required|min:11|unique:pessoas|numeric',
+            'cep' => 'required|min:8|numeric',
+            'numero' => 'min:1|numeric',
+            'logradouro' => 'required|max:100',
+            'bairro' => 'required|max:45',
+            'complemento' => 'max:50',
+            'uf' => 'required|max:2',
+            'municipio' => 'required|max:45'
         ]);
 
         $pessoa = new Pessoa;
         $pessoa->nome = $request->nome;
         $pessoa->cpf = $request->cpf;
+
         $validar_nome = preg_match('|^[\pL\s]+$|u', $pessoa->nome);
 
         if (count($validar->errors()) != 0) {
             return $validar->errors();
-        } 
-        elseif (!$validar_nome) {
+        } elseif (!$validar_nome) {
             return "O nome só pode conter letras";
-        } 
-        else {
+        } else {
             $pessoa->nome = mb_convert_case($pessoa->nome, MB_CASE_TITLE, "UTF-8");
-            
+
             $pessoa->save();
-            return $pessoa;
-           
+
+            $endereco = new Endereco;
+            $endereco->cep = $request->cep;
+            $endereco->numero = $request->numero;
+            $endereco->logradouro = $request->logradouro;
+            $endereco->bairro = $request->bairro;
+            $endereco->complemento = $request->complemento;
+            $endereco->uf = $request->uf;
+            $endereco->municipio = $request->municipio;
+            $endereco->pessoa_id = $pessoa->id;
+            $endereco->save();
         }
     }
 
