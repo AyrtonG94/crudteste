@@ -41,9 +41,8 @@ class PessoasController extends Controller
             $pessoa->nome = mb_convert_case($pessoa->nome, MB_CASE_TITLE, "UTF-8");
             
             $pessoa->save();
-            return response()->json([
-                'Mensagem' => 'Registro criado com sucesso'
-            ]);
+            return $pessoa;
+           
         }
     }
 

@@ -37,6 +37,7 @@ class EnderecosController extends Controller
             return response()->json([
                 'Mensagem' => 'Registro cadastrado com sucesso'
             ], 200);
+            
         }
     }
 
