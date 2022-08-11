@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('pessoas')->group(function () {
     Route::get('index', [PessoasController::class, 'index']);
+    Route::get('/{id}', [PessoasController::class, 'show']);
     Route::post('cadastrar', [PessoasController::class, 'cadastrar']);
     Route::put('editar/{id}', [PessoasController::class, 'editar']);
     Route::delete('deletar-registro/{id}', [PessoasController::class, 'deletarRegistro']);

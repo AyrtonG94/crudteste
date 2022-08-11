@@ -26,7 +26,6 @@ class PessoasController extends Controller
             'nome' => 'required|min:3|max:50|',
             'cpf' => 'required|min:11|unique:pessoas|numeric',
             'cep' => 'required|min:8|numeric',
-            'numero' => 'min:1|numeric',
             'logradouro' => 'required|max:100',
             'bairro' => 'required|max:45',
             'complemento' => 'max:50',
@@ -71,7 +70,8 @@ class PessoasController extends Controller
             'cpf' => 'min:11|numeric|unique:pessoas,cpf,' . $id
         ]);
 
-        $pessoa = Pessoa::find($id);
+        $pessoa = Pessoa::with('endereco')->find($id);
+        
 
         if (count($validar->errors()) != 0) {
             return $validar->errors();
@@ -81,10 +81,15 @@ class PessoasController extends Controller
             ], 500);
         } else {
             $pessoa->update($request->all());
-            return response()->json([
-                'Mensagem' => 'Registro alterado com sucesso'
-            ]);
         }
+    }
+
+    public function show($id = null)
+    {
+
+        $pessoa = Pessoa::with('endereco')->find($id);
+
+        return $pessoa;
     }
 
 
@@ -96,9 +101,7 @@ class PessoasController extends Controller
 
         if ($pessoa) {
             $pessoa->delete();
-            return response()->json([
-                'message' => 'Registro deletado com sucesso'
-            ], 200);
+            return  Pessoa::all();
         } else {
             return response()->json([
                 'error' => 'Esse registro não existe'
