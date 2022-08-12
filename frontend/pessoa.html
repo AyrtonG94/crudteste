@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <title>Pessoas</title>
 </head>
 
@@ -121,13 +122,13 @@
                         const complemento = Swal.getPopup().querySelector('#complemento').value
                         const uf = Swal.getPopup().querySelector('#uf').value
                         const municipio = Swal.getPopup().querySelector('#municipio').value
-                        const pessoa_id = Swal.getPopup().querySelector('#municipio').value
+                        const pessoa_id = Swal.getPopup().querySelector('#pessoa_id').value
                         const pessoa = { nome, cpf, cep, numero, logradouro, bairro, complemento, uf, municipio, pessoa_id }
 
 
                         axios.post('http://127.0.0.1:8000/api/pessoas/cadastrar', pessoa).then(resp => {
                             this.erros = resp.data;
-
+                            
                             if (!this.erros) {
                                 Swal.fire(
                                     'Parabéns',
@@ -177,8 +178,8 @@
                     axios.get(`http://127.0.0.1:8000/api/pessoas/${id}`).then((results) => {
                         var nome_request = results.data.nome;
                         var cpf_request = results.data.cpf
-                        var endereco_completo = results.data.endereco;
-                        for(endereco of endereco_completo) {
+
+                        for (endereco of results.data.endereco) {
 
                         }
 
@@ -187,7 +188,7 @@
                             title: 'Deseja editar esse registro ?',
                             icon: 'warning',
                             html: '<input type="text" id="nome" class="swal2-input" value="' + nome_request + '"> ' +
-                                '<input type="text" id="cpf" class="swal2-input" value="' + cpf_request + '"> '+
+                                '<input type="text" id="cpf" class="swal2-input" value="' + cpf_request + '"> ' +
                                 '<input type="text" id="logradouro" class="swal2-input" value="' + endereco.logradouro + '"> ',
 
                             showCancelButton: true,
@@ -203,8 +204,10 @@
                             const logradouro = Swal.getPopup().querySelector('#logradouro').value
 
                             if (result.isConfirmed) {
-                                axios.put(`http://127.0.0.1:8000/api/pessoas/editar/${id}`, { nome, cpf, logradouro }).then(() => {
-                                    return this.created()
+                                axios.put(`http://127.0.0.1:8000/api/pessoas/editar/${id}`, {nome, cpf, logradouro }).then(() => {
+                                
+                                    return this.created();
+                                    
                                 })
                             }
                         }))

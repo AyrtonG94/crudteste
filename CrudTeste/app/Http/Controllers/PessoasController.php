@@ -67,22 +67,41 @@ class PessoasController extends Controller
 
         $validar = Validator::make($request->all(), [
             'nome' => 'min:3|max:50|',
-            'cpf' => 'min:11|numeric|unique:pessoas,cpf,' . $id
+            'cpf' => 'min:11|numeric|unique:pessoas,cpf,' . $id,
+            'cep' => 'min:8|numeric',
+            'uf' => 'max:2',
+
         ]);
 
-        $pessoa = Pessoa::with('endereco')->find($id);
-        
+        $pessoa = Pessoa::find($id);
+
 
         if (count($validar->errors()) != 0) {
             return $validar->errors();
-        } elseif (!$pessoa) {
+        } 
+        elseif (!$pessoa) {
             return response()->json([
                 'error' => 'Esse registro não existe'
             ], 500);
-        } else {
-            $pessoa->update($request->all());
+        } 
+        else {
+            $pessoa->nome = $request->nome;
+            $pessoa->cpf = $request->cpf;
+
+            $validar_nome = preg_match('|^[\pL\s]+$|u', $pessoa->nome);
+            if (!$validar_nome) {
+                return "O nome só pode conter letras";
+            }
+
+            $pessoa->nome = mb_convert_case($pessoa->nome, MB_CASE_TITLE, "UTF-8");
+            $pessoa->save();
+
+            $endereco = Endereco::where('pessoa_id', $pessoa->id)->first();
+            $endereco->logradouro = $request->logradouro;
+            $endereco->save();
         }
     }
+
 
     public function show($id = null)
     {
