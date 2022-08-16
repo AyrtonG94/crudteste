@@ -10,14 +10,13 @@ class ContasController extends Controller
 {
     public function index()
     {
-        $contas = Conta::all();
+        $contas =  Conta::with('pessoa')->get();
 
         if (count($contas) == 0) {
             return "Não existe contas cadastradas no momento";
         } else {
-            $conta =  Conta::with('pessoa')->get();
 
-            return $conta;
+            return $contas;
         }
     }
 
