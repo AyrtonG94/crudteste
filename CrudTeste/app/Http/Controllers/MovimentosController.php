@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Conta;
 use App\Models\Movimento;
 use Exception;
+use Faker\Core\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,12 +13,12 @@ class MovimentosController extends Controller
 {
     public function index()
     {
-        $movimentos = Movimento::all();
+        $movimentos = Movimento::with('conta', 'pessoa')->get();
 
         if (count($movimentos) == 0) {
             return "Não existe movimentos registrados no momento";
         } else {
-            return Movimento::with('conta', 'pessoa')->get();
+            return $movimentos;
         }
     }
 
@@ -31,7 +32,7 @@ class MovimentosController extends Controller
             return $validar->errors();
         }
 
-        if ($request->status == false) {
+        if ($request->status == '0') {
 
             $conta = Conta::find($request->conta_id);
             $conta->saldo += $request->valor;
@@ -40,17 +41,15 @@ class MovimentosController extends Controller
             return response()->json([
                 ['Mensagem' => 'Depósito efetuado com sucesso']
             ]);
-        } else {
+        }
+        if ($request->status == '1') {
             $conta = Conta::find($request->conta_id);
-            if ($conta->saldo < $request->valor) {
-                return "Você não tem salvo suficiente";
-            }
             $conta->saldo -= $request->valor;
             $conta->save();
             Movimento::create($request->all());
             return response()->json([
                 ['Mensagem' => 'Retirada efetuado com sucesso']
-            ]);
+            ]); 
         }
     }
 }

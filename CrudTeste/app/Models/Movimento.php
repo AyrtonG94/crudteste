@@ -10,6 +10,7 @@ class Movimento extends Model
     use HasFactory;
 
     protected $fillable = ['valor', 'status', 'conta_id', 'pessoa_id'];
+    
 
     public function pessoa() {
         return $this->belongsTo(Pessoa::class);
