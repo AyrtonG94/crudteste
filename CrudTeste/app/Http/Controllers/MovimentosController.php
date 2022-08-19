@@ -29,7 +29,9 @@ class MovimentosController extends Controller
         ]);
 
         if (count($validar->errors()) != 0) {
-            return $validar->errors();
+            return response()->json([
+                $validar->errors()
+            ], 403);
         }
 
         if ($request->status == '0') {
