@@ -31,7 +31,7 @@ class MovimentosController extends Controller
         if (count($validar->errors()) != 0) {
             return response()->json([
                 $validar->errors()
-            ], 403);
+            ], 400);
         }
 
         if ($request->status == '0') {
@@ -46,6 +46,11 @@ class MovimentosController extends Controller
         }
         if ($request->status == '1') {
             $conta = Conta::find($request->conta_id);
+            if($conta->saldo <  $request->valor) {
+                return response()->json([
+                    ['Mensagem' => 'Você não tem saldo suficiente']
+                ], 406);
+            }
             $conta->saldo -= $request->valor;
             $conta->save();
             Movimento::create($request->all());
